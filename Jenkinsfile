@@ -17,15 +17,12 @@ spec:
      secret:
        secretName: pks-cicd  
   hostAliases:
-  - ip: 192.168.1.154
+  - ip: 172.168.21.15
     hostnames:
-    - "small.pks.ellin.net"
-  - ip: 192.168.1.80
-    hostnames:
-    - "harbor.ellin.net"
+    - "harbor.icdscore.local"
   containers:
   - name: k8s
-    image: harbor.ellin.net/library/docker-build
+    image: mcdstanzu/tbsdocker:latest
     command:
     - sleep
     env:
@@ -55,7 +52,7 @@ spec:
                         changelog: true,
                         branch: "main",
                         credentialsId: "git-jenkins",
-                        url: "git@github.com:jeffellin/${APP_NAME}.git"
+                        url: "git@github.com:AkhilCh308/${APP_NAME}.git"
                     )
                     sh 'git rev-parse HEAD > git-commit.txt'
                 }
@@ -68,8 +65,8 @@ spec:
                     sh '''#!/bin/sh -e
                         export GIT_COMMIT=$(cat app/git-commit.txt)
                         kp image save ${APP_NAME} \
-                            --git git@github.com:jeffellin/${APP_NAME}.git \
-                            -t harbor.ellin.net/dev/${APP_NAME} \
+                            --git git@github.com:AkhilCh308/${APP_NAME}.git \
+                            -t harbor.icdscore.local/akhil/${APP_NAME} \
                             --env BP_GRADLE_BUILD_ARGUMENTS='--no-daemon build' \
                             --git-revision ${GIT_COMMIT} -w
                     '''
